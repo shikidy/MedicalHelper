@@ -798,7 +798,7 @@ function main()
 		end
 	end
 	if script.this.filename:find("%.luac") then
-		os.rename(getWorkingDirectory().."\\MedicalHelper.luac", "MedicalHelper.lua") 
+		os.rename(getWorkingDirectory().."\\MedicalHelper.luac", getWorkingDirectory().."\\MedicalHelper.lua") 
 	end
 --	repeat wait(100) until sampIsLocalPlayerSpawned()
 	------------
