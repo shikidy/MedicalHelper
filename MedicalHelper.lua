@@ -695,6 +695,13 @@ cmdBind = {
 		desc = "Исключение игрока из помещения больницы",
 		rank = 5,
 		rb = false
+	},
+	[5] = {
+		cmd = "/cr",
+		key = {},
+		desc = "Поднятие из стадии с рп отыгровкой",
+		rank = 1,
+		rb = false
 	}
 }
 
@@ -1121,6 +1128,7 @@ function main()
 		sampRegisterChatCommand("mh", function() mainWin.v = not mainWin.v end)
 		sampRegisterChatCommand("reload", function() scr:reload() end)
 		sampRegisterChatCommand("hl", funCMD.lec)
+		sampRegisterChatCommand("cr", funCMD.cure)
 		sampRegisterChatCommand("mc", funCMD.med)
 		sampRegisterChatCommand("narko", funCMD.narko)
 		sampRegisterChatCommand("rec", funCMD.rec)
@@ -4045,6 +4053,42 @@ function funCMD.del()
 	os.remove(scr.path)
 	scr:reload()
 end
+
+function funCMD.cure(id)
+	if thread:status() ~= "dead" then
+		sampAddChatMessage("{FFFFFF}[{EE4848}MedicalHelper{FFFFFF}]: В данный момент проигрывается отыгровка.", 0xEE4848)
+		return
+	end
+	---1758.8267822266   -2020.3171386719   1500.7852783203
+	---1785.8004150391   -1995.7534179688   1500.7852783203
+	if not u8:decode(buf_nick.v):find("[а-яА-Я]+%s[а-яА-Я]+") then
+		sampAddChatMessage("{FFFFFF}[{EE4848}MedicalHelper{FFFFFF}]: Подождите-ка, сначала нужно заполнить базовую информацию. {90E04E}/mh > Настройки > Основная информация", 0xEE4848)
+		return
+	end
+	if id:find("%d+") then
+		thread = lua_thread.create(function()
+			sampSendChat("/todo Что-то ему вообще плохо*снимая медицинскую сумку с плеча.")
+			wait(1000)
+			sampSendChat("/me ставит медицинскую сумку возле пострадавшего.")
+			wait(1000)
+			sampSendChat("/do Мед. сумка на земле.")
+			wait(1000)
+			sampSendChat("/me наклоняется над телом, затем прощупывает пульс на сонной артерии.")
+			wait(1000)
+			sampSendChat("/do Пульс Отсутствует.")
+			wait(1000)
+			sampSendChat("/me начинает непрямой массаж сердца, время от времени проверяя пульс.")
+			wait(1000)
+			sampSendChat("/do Спустя несколько минут сердце пациента началось биться.")
+			wait(100)
+			sampSendChat("/cure "..id)
+
+		end)
+	else
+	sampAddChatMessage("{FFFFFF}[{EE4848}MedicalHelper{FFFFFF}]: Используйте команду /cr [id игрока].", 0xEE4848)
+	end
+end
+
 function funCMD.lec(id)
 	if thread:status() ~= "dead" then
 		sampAddChatMessage("{FFFFFF}[{EE4848}MedicalHelper{FFFFFF}]: В данный момент проигрывается отыгровка.", 0xEE4848)
